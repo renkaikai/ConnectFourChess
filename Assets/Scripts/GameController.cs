@@ -23,12 +23,14 @@ public class GameController : MonoBehaviour {
 	private bool isFalling;
 	//声明一个布尔值,用来判断我方是否胜利
 	private bool isWin;
+	//人机对战游戏结果
+	public  string result="游戏还未结束";	
 
 	// Use this for initialization
 	void Start () {
 		PrepareField();
-		m_CurrentDisc=AddDisc(Random.Range(1,3));
-		//m_CurrentDisc=AddDisc(1);
+		//m_CurrentDisc=AddDisc(Random.Range(1,3));
+		m_CurrentDisc=AddDisc(1);
 	}
 	
 	// Update is called once per frame
@@ -64,7 +66,7 @@ public class GameController : MonoBehaviour {
 		//游戏是否胜利的判断
 		if (isWin)
 		{
-			string result=(m_CurrentPlayerId==1)?"你赢了":"你输了";
+			result=(m_CurrentPlayerId==1)?"你赢了":"你输了";
 			Debug.Log(result);
 			return;
 		}
@@ -200,7 +202,7 @@ public class GameController : MonoBehaviour {
 		if(maxRowIndex+1!=m_BoardRows)
 		{
 			//若当前格子已被占据,则将表示棋盘的对应数组值改为玩家id
-			print("playerId"+playerId);
+			//print("playerId"+playerId);
 			m_BoardField[maxRowIndex+1,colIndex]=playerId;			
 			return maxRowIndex+1;
 		}
@@ -333,5 +335,4 @@ public class GameController : MonoBehaviour {
 		}
 		return AIMoves;
 	}
-
 }
