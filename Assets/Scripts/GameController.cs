@@ -70,6 +70,11 @@ public class GameController : MonoBehaviour {
 			Debug.Log(result);
 			return;
 		}
+		if(GetPossibleCol().Count==0&&!isWin)
+		{
+			result="平局";
+			return;
+		}
 	}
 
 	//棋盘数组的生成和初始化

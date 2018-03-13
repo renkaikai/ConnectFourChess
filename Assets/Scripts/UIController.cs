@@ -4,52 +4,59 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
-	public Image maskImage;
-	public GameObject StartBtn;
-	public GameObject victImage;
-	public GameObject defeatImage;
+	public Image m_maskImage;
+	public GameObject m_StartBtn;
+	public GameObject m_victImage;
+	public GameObject m_defeatImage;
+	public GameObject m_drawImage;
 	[SerializeField]
-	private GameObject gameController;
-	private float timer=0;
-	private float totalTime=2;
-	private bool startFade=false;
-
-	private GameController gc;
+	private GameObject m_gameController;
+	private float m_timer=0;
+	private float m_totalTime=2;
+	private bool m_startFade=false;
+	private GameController m_gc;
+	//title动画
+	private Animator m_titleUpAnim;
 	// Use this for initialization
 	void Start () 
 	{
-		maskImage.fillAmount=1;
+		m_maskImage.fillAmount=1;
 		
-		gc=gameController.GetComponent<GameController>();
+		m_gc=m_gameController.GetComponent<GameController>();
+
+		m_titleUpAnim=GameObject.Find("TitleImage").GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{	
 		//点完开始游戏, 黑色遮罩消失，并将游戏逻辑脚本激活
-		if(startFade)
+		if(m_startFade)
 		{
-			timer+=Time.deltaTime;
-			maskImage.fillAmount=(totalTime-timer)/totalTime;
-			if(maskImage.fillAmount==0)
+			m_timer+=Time.deltaTime;
+			m_maskImage.fillAmount=(m_totalTime-m_timer)/m_totalTime;
+			if(m_maskImage.fillAmount==0)
 			{
-				gameController.SetActive(true);
-				startFade=false;
+				m_gameController.SetActive(true);
+				m_startFade=false;
 			}
 		}
 		//如果玩家胜利, 黑色遮罩出现,胜利ui出现
-		if(gc.result=="你赢了")
+		if(m_gc.result=="你赢了")
 		{			
-			timer-=Time.deltaTime;
-			maskImage.fillAmount=(totalTime-timer)/totalTime;
-			victImage.SetActive(true);
+			ShowMask();
+			m_victImage.SetActive(true);
 		}
 		//如果玩家失败，黑色遮罩出现，失败ui出现
-		if(gc.result=="你输了")
-		{
-			timer-=Time.deltaTime;
-			maskImage.fillAmount=(totalTime-timer)/totalTime;
-			defeatImage.SetActive(true);
+		if(m_gc.result=="你输了")
+		{	
+			ShowMask();			
+			m_defeatImage.SetActive(true);
+		}
+		if (m_gc.result=="平局")
+		{			
+			ShowMask();			
+			m_drawImage.SetActive(true);
 		}
 		
 	}
@@ -58,11 +65,18 @@ public class UIController : MonoBehaviour {
 	public void FadeMask()
 	{	
 		//点击使开始游戏按钮消失		
-		StartBtn.gameObject.GetComponent<Image>().enabled=false;		
-		if(maskImage.fillAmount==1)
+		m_StartBtn.gameObject.GetComponent<Image>().enabled=false;		
+		if(m_maskImage.fillAmount==1)
 		{
-			startFade=true;
+			m_startFade=true;
 		}
+		//title上移
+		m_titleUpAnim.SetBool("up",true);
 	}
 
+	private void ShowMask()
+	{
+		m_timer-=Time.deltaTime;
+		m_maskImage.fillAmount=(m_totalTime-m_timer)/m_totalTime;
+	}
 }
