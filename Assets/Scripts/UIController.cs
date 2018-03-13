@@ -16,7 +16,7 @@ public class UIController : MonoBehaviour {
 	private bool m_startFade=false;
 	private GameController m_gc;
 	//title动画
-	private Animator m_titleUpAnim;
+	private Animator m_titleAnim;
 	// Use this for initialization
 	void Start () 
 	{
@@ -24,7 +24,7 @@ public class UIController : MonoBehaviour {
 		
 		m_gc=m_gameController.GetComponent<GameController>();
 
-		m_titleUpAnim=GameObject.Find("TitleImage").GetComponent<Animator>();
+		m_titleAnim=GameObject.Find("TitleImage").GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -46,17 +46,20 @@ public class UIController : MonoBehaviour {
 		{			
 			ShowMask();
 			m_victImage.SetActive(true);
+			m_titleAnim.SetBool("down",true);
 		}
 		//如果玩家失败，黑色遮罩出现，失败ui出现
 		if(m_gc.result=="你输了")
 		{	
 			ShowMask();			
 			m_defeatImage.SetActive(true);
+			m_titleAnim.SetBool("down",true);			
 		}
 		if (m_gc.result=="平局")
 		{			
 			ShowMask();			
 			m_drawImage.SetActive(true);
+			m_titleAnim.SetBool("down",true);			
 		}
 		
 	}
@@ -71,9 +74,10 @@ public class UIController : MonoBehaviour {
 			m_startFade=true;
 		}
 		//title上移
-		m_titleUpAnim.SetBool("up",true);
+		m_titleAnim.SetBool("up",true);
 	}
 
+	//显示黑色遮罩
 	private void ShowMask()
 	{
 		m_timer-=Time.deltaTime;
