@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour {
 	public Image m_maskImage;
@@ -9,6 +10,7 @@ public class UIController : MonoBehaviour {
 	public GameObject m_victImage;
 	public GameObject m_defeatImage;
 	public GameObject m_drawImage;
+	public GameObject m_againImage;
 	[SerializeField]
 	private GameObject m_gameController;
 	private float m_timer=0;
@@ -47,19 +49,22 @@ public class UIController : MonoBehaviour {
 			ShowMask();
 			m_victImage.SetActive(true);
 			m_titleAnim.SetBool("down",true);
+			m_againImage.SetActive(true);
 		}
 		//如果玩家失败，黑色遮罩出现，失败ui出现
 		if(m_gc.result=="你输了")
 		{	
 			ShowMask();			
 			m_defeatImage.SetActive(true);
-			m_titleAnim.SetBool("down",true);			
+			m_titleAnim.SetBool("down",true);	
+			m_againImage.SetActive(true);
 		}
 		if (m_gc.result=="平局")
 		{			
 			ShowMask();			
 			m_drawImage.SetActive(true);
-			m_titleAnim.SetBool("down",true);			
+			m_titleAnim.SetBool("down",true);		
+			m_againImage.SetActive(true);				
 		}
 		
 	}
@@ -82,5 +87,10 @@ public class UIController : MonoBehaviour {
 	{
 		m_timer-=Time.deltaTime;
 		m_maskImage.fillAmount=(m_totalTime-m_timer)/m_totalTime;
+	}
+
+	public void PlayAgain()
+	{
+		SceneManager.LoadScene(0);
 	}
 }
